@@ -1,18 +1,38 @@
+defmodule Main do
+  def mapParser(map, result) do
+    # Split the map into lines
+    String.split(map, "\n")
+
+    # Loop over the lines
+    |> Enum.map(fn line ->
+      # Split the line into characters
+      String.graphemes(line)
+      # Loop over the characters
+      |> Enum.map(fn
+        character ->
+          # Print the character
+          num_character = Integer.parse(character)
+
+          case num_character do
+            {num, _} ->
+              result_with_num = result ++ [num]
+              IO.inspect(result_with_num)
+
+            :error ->
+              :error
+          end
+      end)
+    end)
+
+  end
+end
+
 data = File.read("map.txt")
+result = []
 
 case data do
   {:ok, content} ->
-    lines = String.split(content, "\n")
-
-    # Loop over the array: ["1abc2", "pqr3stu8vwx", "a1b2c3d4e5f", "treb7uchet"]
-    Enum.map(lines, fn line ->
-      characters_of_line_array = String.graphemes(line)
-
-      # Loop over the letters in the array:
-      Enum.map(characters_of_line_array, fn character ->
-        
-      end)
-    end)
+    Main.mapParser(content, result)
 
   {:error, reason} ->
     IO.puts("Error #{reason}")
